@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.barmge.rertro.adapter.recycleAdapter
+import com.barmge.rertro.model.Post
 import com.barmge.rertro.repository.Repository
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
-    private val myAdapter by lazy { recycleAdapter() }
+    //private val myAdapter by lazy { recycleAdapter() }
 
     /*private var getButton = findViewById<Button>(R.id.button)
     private var numberText = findViewById<TextView>(R.id.editTextNumber)
@@ -28,13 +29,54 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupRecyclView()
+        //setupRecyclView()
 
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this , viewModelFactory).get(MainViewModel::class.java)
 
-        //get data using custom post call with chosen order
+        //Get Post with Headers
+        viewModel.getPost3("11112222")
+        viewModel.myResponse.observe(this, Observer { response ->
+            if(response.isSuccessful){
+                Log.d("Main", response.body().toString())
+                Log.d("Main", response.code().toString())
+                Log.d("Main", response.headers().toString())
+            }else {
+                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        //Send Post to the server as FormlUrlEcoded
+        /*viewModel.pushPost2(2 , 2 , "Waleed Mohamed" , "Android Developer")
+        viewModel.myResponse.observe(this , Observer { responce ->
+            if(responce.isSuccessful){
+                Log.d("Main" , responce.body().toString())
+                Log.d("Main" , responce.code().toString())
+                Log.d("Main" , responce.message())
+
+            }else{
+                Toast.makeText(this , responce.code() , Toast.LENGTH_LONG ).show()
+            }
+
+        })*/
+
+       /*//Send Post to the server as json
+        val myPost = Post( 2 , 2 , "Waleed Mohamed" , "Android Developer")
+        viewModel.pushPost(myPost)
+        viewModel.myResponse.observe(this , Observer { responce ->
+            if(responce.isSuccessful){
+                Log.d("Main" , responce.body().toString())
+                Log.d("Main" , responce.code().toString())
+                Log.d("Main" , responce.message())
+
+            }else{
+                Toast.makeText(this , responce.code() , Toast.LENGTH_LONG ).show()
+            }
+
+        })*/
+
+    /* //get data using custom post call with chosen order
         viewModel.getCustomPost(2 , "id" , "desc")
         viewModel.myResponseCustom.observe(this , Observer { responce ->
             if(responce.isSuccessful){
@@ -43,9 +85,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this , responce.code() , Toast.LENGTH_LONG ).show()
             }
 
-        })
-
-
+        })*/
 
         //MainViewModel Logic Code to Get the data
         /*viewModel.getPost()
@@ -114,14 +154,11 @@ class MainActivity : AppCompatActivity() {
             })
         }*/
 
-
-
-
     }
-    //Set data to the recycle view xml to show the data with orientation of the layout
+    /*//Set data to the recycle view xml to show the data with orientation of the layout
     private fun setupRecyclView(){
         recycle_view.adapter = myAdapter
         recycle_view.layoutManager = LinearLayoutManager(this)
 
-    }
+    }*/
 }

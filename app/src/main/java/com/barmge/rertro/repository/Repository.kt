@@ -6,6 +6,16 @@ import retrofit2.Response
 
 class Repository {
 
+    //Repo for pushPost to send the post as json
+    suspend fun pushPost(post: Post) : Response<Post>{
+        return RetrofitInstance.api.pushPost(post)
+    }
+
+    //Repo for pushPost to send the post as json
+    suspend fun pushPost2(userId: Int , id : Int , title : String , body : String ) : Response<Post>{
+        return RetrofitInstance.api.pushPost2(userId , id , title , body)
+    }
+
     //Repo For getPost that Hard Coded
     suspend fun getPost() : Response<Post>
     {
@@ -16,6 +26,10 @@ class Repository {
     suspend fun getPost2 (number : Int) : Response<Post>
     {
         return RetrofitInstance.api.getPost2(number)
+    }
+
+    suspend fun getPost3(auth: String): Response<Post> {
+        return RetrofitInstance.api.getPost3(auth)
     }
 
     //Repo For getPost that have Custom UserId Number

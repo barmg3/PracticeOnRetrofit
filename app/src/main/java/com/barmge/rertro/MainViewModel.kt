@@ -15,6 +15,22 @@ class MainViewModel(private val repository: Repository): ViewModel() {
     val myResponseCustom : MutableLiveData<Response<List<Post>>> = MutableLiveData()
     val myResponseCustom2 : MutableLiveData<Response<List<Post>>> = MutableLiveData()
 
+    fun pushPost(post: Post){
+
+        viewModelScope.launch {
+            val response : Response<Post> = repository.pushPost(post)
+            myResponse.value = response
+        }
+    }
+
+    fun pushPost2(userId: Int , id : Int , title : String , body : String){
+
+        viewModelScope.launch {
+            val response : Response<Post> = repository.pushPost2(userId , id , title , body)
+            myResponse.value = response
+        }
+    }
+
     //ViewModel Scope For HardCoded Number Post
     fun getPost(){
 
@@ -30,6 +46,13 @@ class MainViewModel(private val repository: Repository): ViewModel() {
         viewModelScope.launch {
             val response: Response<Post> = repository.getPost2(number)
             myResponse2.value = response
+        }
+    }
+
+    fun getPost3(auth: String){
+        viewModelScope.launch {
+            val response = repository.getPost3(auth)
+            myResponse.value = response
         }
     }
 

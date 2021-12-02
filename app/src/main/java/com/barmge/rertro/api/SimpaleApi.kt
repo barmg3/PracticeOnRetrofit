@@ -2,12 +2,25 @@ package com.barmge.rertro.api
 
 import com.barmge.rertro.model.Post
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
+import retrofit2.http.*
 
 interface SimpaleApi {
+
+    //Push post as json
+    @POST("Posts")
+    suspend fun pushPost(
+        @Body post: Post
+    ): Response<Post>
+
+    //Push post as FormUrl
+    @FormUrlEncoded
+    @POST("Posts")
+    suspend fun pushPost2(
+        @Field ("userId") userId: Int,
+        @Field ("id") id: Int,
+        @Field ("title") title: String,
+        @Field ("body") body: String
+    ): Response<Post>
 
     //Get For HardCoded Post Number
     @GET("posts/1")
@@ -18,6 +31,12 @@ interface SimpaleApi {
     suspend fun getPost2(
         @Path ("postNumber") number : Int
     ) : Response<Post>
+
+    //Get Post with headers
+    @GET("posts/1")
+    suspend fun getPost3(
+        @Header("Auth") auth: String)
+    : Response<Post>
 
     @GET("posts/")
     suspend fun getCustomPost(
