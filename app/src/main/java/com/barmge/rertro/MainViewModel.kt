@@ -34,10 +34,10 @@ class MainViewModel(private val repository: Repository): ViewModel() {
     }
 
     //ViewModel Scope For custom UserId Number
-    fun getCustomPost (userId : Int){
+    fun getCustomPost (userId : Int , sort : String , order : String){
         viewModelScope.launch {
-            val response:Response<List<Post>> = repository.getCustomPost(userId)
-            myResponseCustom.value=response
+            val response:Response<List<Post>> = repository.getCustomPost(userId , sort , order)
+            myResponseCustom.value = response
 
         }
     }
@@ -45,7 +45,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
     //ViewModel Scope For custom UserId Number and the order of Posts
     fun getCustomPost2 (userId : Int , options : Map<String , String>){
         viewModelScope.launch {
-            val response:Response<List<Post>> = repository.getCustomPost(userId)
+            val response:Response<List<Post>> = repository.getCustomPost2(userId , options)
             myResponseCustom2.value=response
 
         }

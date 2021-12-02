@@ -19,9 +19,9 @@ class Repository {
     }
 
     //Repo For getPost that have Custom UserId Number
-    suspend fun getCustomPost (userId : Int) : Response<List<Post>>
+    suspend fun getCustomPost (userId : Int , sort : String , order : String) : Response<List<Post>>
     {
-        return RetrofitInstance.api.getCustomPost(userId)
+        return RetrofitInstance.api.getCustomPost(userId , sort , order)
     }
 
     //Repo For getPost that have Custom UserId Number , Sorting String and Ordering String

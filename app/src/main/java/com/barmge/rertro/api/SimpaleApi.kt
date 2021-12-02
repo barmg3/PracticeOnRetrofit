@@ -21,7 +21,9 @@ interface SimpaleApi {
 
     @GET("posts/")
     suspend fun getCustomPost(
-        @Query ("userId") userId : Int
+        @Query ("userId") userId : Int ,
+        @Query ("_sort") sort : String ,
+        @Query ("_order") order : String
     ) : Response<List<Post>>
 
     @GET("posts/")

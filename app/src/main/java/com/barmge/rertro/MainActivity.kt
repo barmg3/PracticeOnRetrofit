@@ -4,26 +4,48 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.barmge.rertro.adapter.recycleAdapter
 import com.barmge.rertro.repository.Repository
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
-    private var getButton = findViewById<Button>(R.id.button)
+    private val myAdapter by lazy { recycleAdapter() }
+
+    /*private var getButton = findViewById<Button>(R.id.button)
     private var numberText = findViewById<TextView>(R.id.editTextNumber)
-    private var textArea = findViewById<TextView>(R.id.textView)
+    private var textArea = findViewById<TextView>(R.id.textView)*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupRecyclView()
+
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this , viewModelFactory).get(MainViewModel::class.java)
+
+        //get data using custom post call with chosen order
+        viewModel.getCustomPost(2 , "id" , "desc")
+        viewModel.myResponseCustom.observe(this , Observer { responce ->
+            if(responce.isSuccessful){
+                responce.body()?.let { myAdapter.setData(it) }
+            }else{
+                Toast.makeText(this , responce.code() , Toast.LENGTH_LONG ).show()
+            }
+
+        })
+
+
 
         //MainViewModel Logic Code to Get the data
         /*viewModel.getPost()
@@ -70,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             })
         }*/
 
-        //MainViewModel Logic Code to Get the Data for Custom UserId
+        /*//MainViewModel Logic Code to Get the Data for Custom UserId
         // gets all post have the same UserId number
         // and put the post in the order you chose and Show it on The Layout
 
@@ -90,8 +112,16 @@ class MainActivity : AppCompatActivity() {
                     textArea.text = responce.code().toString()
                 }
             })
-        }
+        }*/
 
+
+
+
+    }
+    //Set data to the recycle view xml to show the data with orientation of the layout
+    private fun setupRecyclView(){
+        recycle_view.adapter = myAdapter
+        recycle_view.layoutManager = LinearLayoutManager(this)
 
     }
 }
